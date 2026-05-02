@@ -11,7 +11,13 @@ const setupServer = () => {
   // Middleware
   app.use(cors());
   app.use(express.json());
-  app.use(pino());
+  app.use(
+    pino({
+      transport: {
+        target: 'pino-pretty',
+      },
+    }),
+  );
 
   // Routes
   app.get('/notes', (req, res) => {
