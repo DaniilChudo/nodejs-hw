@@ -3,14 +3,14 @@ import * as notesController from '../controllers/notesController.js';
 
 const router = Router();
 
-router.get('/', notesController.getAllNotes);
+router.get('/notes', notesController.getAllNotes);
 
-router.get('/:noteId', notesController.getNoteById);
+router.get('/notes/:noteId', notesController.getNoteById);
 
-router.post('/', notesController.createNote);
+router.post('/notes', notesController.createNote);
 
-router.patch('/:noteId', notesController.updateNote);
+router.patch('/notes/:noteId', notesController.updateNote);
 
-router.delete('/:noteId', notesController.deleteNote);
+router.delete('/notes/:noteId', notesController.deleteNote);
 
 export default router;

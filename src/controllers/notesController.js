@@ -4,11 +4,7 @@ import { Note } from '../models/note.js';
 export const getAllNotes = async (req, res, next) => {
   try {
     const notes = await Note.find();
-    res.status(200).json({
-      status: 200,
-      message: 'Successfully found notes!',
-      data: notes,
-    });
+    res.json(notes);
   } catch (error) {
     next(error);
   }
@@ -23,11 +19,7 @@ export const getNoteById = async (req, res, next) => {
       throw createError(404, 'Note not found');
     }
 
-    res.status(200).json({
-      status: 200,
-      message: `Successfully found note with id ${noteId}!`,
-      data: note,
-    });
+    res.json(note);
   } catch (error) {
     next(error);
   }
@@ -36,11 +28,7 @@ export const getNoteById = async (req, res, next) => {
 export const createNote = async (req, res, next) => {
   try {
     const note = await Note.create(req.body);
-    res.status(201).json({
-      status: 201,
-      message: 'Successfully created a note!',
-      data: note,
-    });
+    res.status(201).json(note);
   } catch (error) {
     next(error);
   }
@@ -50,18 +38,14 @@ export const updateNote = async (req, res, next) => {
   try {
     const { noteId } = req.params;
     const note = await Note.findByIdAndUpdate(noteId, req.body, {
-      new: true,
+      returnDocument: 'after',
     });
 
     if (!note) {
       throw createError(404, 'Note not found');
     }
 
-    res.status(200).json({
-      status: 200,
-      message: 'Successfully patched a note!',
-      data: note,
-    });
+    res.json(note);
   } catch (error) {
     next(error);
   }
@@ -76,7 +60,7 @@ export const deleteNote = async (req, res, next) => {
       throw createError(404, 'Note not found');
     }
 
-    res.status(204).send();
+    res.status(200).json(note);
   } catch (error) {
     next(error);
   }

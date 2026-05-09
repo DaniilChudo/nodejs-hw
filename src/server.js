@@ -16,7 +16,7 @@ const setupServer = async () => {
   app.use(express.json());
 
   // Routes
-  app.use('/notes', notesRouter);
+  app.use(notesRouter);
 
   // 404 & Error Handlers
   app.use(notFoundHandler);
