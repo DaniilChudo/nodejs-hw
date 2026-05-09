@@ -1,25 +1,20 @@
 import express from 'express';
 import cors from 'cors';
-import pino from 'pino-http';
-import dotenv from 'dotenv';
+import 'dotenv/config';
+import connectMongoDB from './db/connectMongoDB.js';
+import { logger } from './middleware/logger.js';
+import { notFoundHandler } from './middleware/notFoundHandler.js';
+import { errorHandler } from './middleware/errorHandler.js';
 
-dotenv.config();
-
-const setupServer = () => {
+const setupServer = async () => {
   const app = express();
 
   // Middleware
+  app.use(logger);
   app.use(cors());
   app.use(express.json());
-  app.use(
-    pino({
-      transport: {
-        target: 'pino-pretty',
-      },
-    }),
-  );
 
-  // Routes
+  // Routes (Placeholders for now)
   app.get('/notes', (req, res) => {
     res.status(200).json({
       message: 'Retrieved all notes',
@@ -33,23 +28,12 @@ const setupServer = () => {
     });
   });
 
-  app.get('/test-error', (req, res) => {
-    throw new Error('Simulated server error');
-  });
+  // 404 & Error Handlers
+  app.use(notFoundHandler);
+  app.use(errorHandler);
 
-  // 404 Handler
-  app.use((req, res) => {
-    res.status(404).json({
-      message: 'Route not found',
-    });
-  });
-
-  // Global Error Handler
-  app.use((err, req, res, next) => {
-    res.status(500).json({
-      message: err.message,
-    });
-  });
+  // Connect to MongoDB before starting the server
+  await connectMongoDB();
 
   const PORT = process.env.PORT || 3000;
 
