@@ -5,6 +5,7 @@ import connectMongoDB from './db/connectMongoDB.js';
 import { logger } from './middleware/logger.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
 import { errorHandler } from './middleware/errorHandler.js';
+import notesRouter from './routes/notesRoutes.js';
 
 const setupServer = async () => {
   const app = express();
@@ -14,19 +15,8 @@ const setupServer = async () => {
   app.use(cors());
   app.use(express.json());
 
-  // Routes (Placeholders for now)
-  app.get('/notes', (req, res) => {
-    res.status(200).json({
-      message: 'Retrieved all notes',
-    });
-  });
-
-  app.get('/notes/:noteId', (req, res) => {
-    const { noteId } = req.params;
-    res.status(200).json({
-      message: `Retrieved note with ID: ${noteId}`,
-    });
-  });
+  // Routes
+  app.use('/notes', notesRouter);
 
   // 404 & Error Handlers
   app.use(notFoundHandler);
