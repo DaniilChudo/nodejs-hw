@@ -20,6 +20,7 @@
   "homepage": "https://github.com/DaniilChudo/nodejs-hw#readme",
   "description": "",
   "dependencies": {
+    "celebrate": "^15.0.3",
     "cors": "^2.8.6",
     "dotenv": "^16.6.1",
     "express": "^4.19.2",
