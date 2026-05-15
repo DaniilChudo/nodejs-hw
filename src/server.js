@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import { errors } from 'celebrate';
 import 'dotenv/config';
 import connectMongoDB from './db/connectMongoDB.js';
 import { logger } from './middleware/logger.js';
@@ -20,6 +21,7 @@ const setupServer = async () => {
 
   // 404 & Error Handlers
   app.use(notFoundHandler);
+  app.use(errors());
   app.use(errorHandler);
 
   // Connect to MongoDB before starting the server
