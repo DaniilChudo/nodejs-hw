@@ -18,10 +18,11 @@ const noteSchema = new Schema(
       enum: TAGS,
       default: 'Todo',
       trim: true,
-      index: true,
     },
   },
   { timestamps: true, versionKey: false },
 );
+
+noteSchema.index({ tag: 1 });
 
 export const Note = mongoose.model('Note', noteSchema);
