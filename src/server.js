@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import { errors } from 'celebrate';
 import 'dotenv/config';
 import connectMongoDB from './db/connectMongoDB.js';
@@ -15,6 +16,7 @@ const setupServer = async () => {
   app.use(logger);
   app.use(cors());
   app.use(express.json());
+  app.use(cookieParser());
 
   // Routes
   app.use(notesRouter);
