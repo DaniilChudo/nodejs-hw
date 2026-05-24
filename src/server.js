@@ -8,6 +8,7 @@ import { logger } from './middleware/logger.js';
 import { notFoundHandler } from './middleware/notFoundHandler.js';
 import { errorHandler } from './middleware/errorHandler.js';
 import notesRouter from './routes/notesRoutes.js';
+import authRouter from './routes/authRoutes.js';
 
 const setupServer = async () => {
   const app = express();
@@ -20,6 +21,7 @@ const setupServer = async () => {
 
   // Routes
   app.use(notesRouter);
+  app.use(authRouter);
 
   // 404 & Error Handlers
   app.use(notFoundHandler);
