@@ -9,8 +9,8 @@ export const getAllNotes = async (req, res, next) => {
     const perPageNum = Number(perPage);
     const skip = (pageNum - 1) * perPageNum;
 
-    const query = Note.find();
-    const countQuery = Note.countDocuments();
+    const query = Note.find({ userId: req.user._id });
+    const countQuery = Note.countDocuments({ userId: req.user._id });
 
     if (tag) {
       query.where('tag').equals(tag);
@@ -48,7 +48,7 @@ export const getAllNotes = async (req, res, next) => {
 export const getNoteById = async (req, res, next) => {
   try {
     const { noteId } = req.params;
-    const note = await Note.findById(noteId);
+    const note = await Note.findOne({ _id: noteId, userId: req.user._id });
 
     if (!note) {
       throw createError(404, 'Note not found');
@@ -62,7 +62,7 @@ export const getNoteById = async (req, res, next) => {
 
 export const createNote = async (req, res, next) => {
   try {
-    const note = await Note.create(req.body);
+    const note = await Note.create({ ...req.body, userId: req.user._id });
     res.status(201).json(note);
   } catch (error) {
     next(error);
@@ -72,9 +72,13 @@ export const createNote = async (req, res, next) => {
 export const updateNote = async (req, res, next) => {
   try {
     const { noteId } = req.params;
-    const note = await Note.findByIdAndUpdate(noteId, req.body, {
-      returnDocument: 'after',
-    });
+    const note = await Note.findOneAndUpdate(
+      { _id: noteId, userId: req.user._id },
+      req.body,
+      {
+        returnDocument: 'after',
+      },
+    );
 
     if (!note) {
       throw createError(404, 'Note not found');
@@ -89,7 +93,10 @@ export const updateNote = async (req, res, next) => {
 export const deleteNote = async (req, res, next) => {
   try {
     const { noteId } = req.params;
-    const note = await Note.findByIdAndDelete(noteId);
+    const note = await Note.findOneAndDelete({
+      _id: noteId,
+      userId: req.user._id,
+    });
 
     if (!note) {
       throw createError(404, 'Note not found');
