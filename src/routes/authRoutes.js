@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import { celebrate } from 'celebrate';
-import { authenticate } from '../middleware/authenticate.js';
 import {
   registerUserSchema,
   loginUserSchema,
@@ -32,7 +31,6 @@ router.post(
   resetPassword,
 );
 
-router.use(authenticate);
 router.post('/auth/logout', logoutUser);
 
 export default router;
