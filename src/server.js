@@ -21,8 +21,8 @@ const setupServer = async () => {
   app.use(cookieParser());
 
   // Routes
-  app.use(notesRouter);
   app.use(authRouter);
+  app.use(notesRouter);
   app.use(userRouter);
 
   // 404 & Error Handlers
