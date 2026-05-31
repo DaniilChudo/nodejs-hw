@@ -142,6 +142,7 @@ export const requestResetEmail = async (req, res, next) => {
         to: email,
         subject: 'Reset your password',
         html,
+        from: process.env.SMTP_FROM,
       });
     } catch {
       throw createError(
